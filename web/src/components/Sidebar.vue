@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useDateFormat, useIntervalFn, useNow } from '@vueuse/core'
+import { useDateFormat, useIntervalFn, useNow, useStorage } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -12,6 +12,13 @@ import { getPlatformClass, getPlatformLabel, useAccountStore } from '@/stores/ac
 import { useAppStore } from '@/stores/app'
 import { useStatusStore } from '@/stores/status'
 import { useUserStore } from '@/stores/user'
+
+const avatars = useStorage<Record<string, string>>('account_avatars', {})
+
+function getAvatar(account: any) {
+  if (!account) return ''
+  return avatars.value[account.id] || (account.uin ? `https://q1.qlogo.cn/g?b=qq&nk=${account.uin}&s=100` : '')
+}
 
 const accountStore = useAccountStore()
 const statusStore = useStatusStore()
@@ -536,12 +543,7 @@ async function copyToken() {
         >
           <div class="flex items-center gap-3 overflow-hidden">
             <div class="h-8 w-8 flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-gray-200 ring-2 ring-white dark:bg-gray-600 dark:ring-gray-700">
-              <img
-                v-if="currentAccount?.uin"
-                :src="`https://q1.qlogo.cn/g?b=qq&nk=${currentAccount.uin}&s=100`"
-                class="h-full w-full object-cover"
-                @error="(e) => (e.target as HTMLImageElement).style.display = 'none'"
-              >
+              <div v-if="getAvatar(currentAccount)" v-html="`<img src='${getAvatar(currentAccount)}' class='h-full w-full object-cover' />`" />
               <div v-else class="i-carbon-user text-gray-400" />
             </div>
             <div class="min-w-0 flex flex-col items-start">
@@ -584,12 +586,7 @@ async function copyToken() {
                 @click="selectAccount(acc)"
               >
                 <div class="h-6 w-6 flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-gray-200 dark:bg-gray-600">
-                  <img
-                    v-if="acc.uin"
-                    :src="`https://q1.qlogo.cn/g?b=qq&nk=${acc.uin}&s=100`"
-                    class="h-full w-full object-cover"
-                    @error="(e) => (e.target as HTMLImageElement).style.display = 'none'"
-                  >
+                  <div v-if="getAvatar(acc)" v-html="`<img src='${getAvatar(acc)}' class='h-full w-full object-cover' />`" />
                   <div v-else class="i-carbon-user text-gray-400" />
                 </div>
                 <div class="min-w-0 flex flex-1 flex-col items-start">
