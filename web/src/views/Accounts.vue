@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { useIntervalFn } from '@vueuse/core'
+import { useIntervalFn, useStorage } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import AccountModal from '@/components/AccountModal.vue'
+import AvatarModal from '@/components/AvatarModal.vue'
 import ConfirmModal from '@/components/ConfirmModal.vue'
 import BaseButton from '@/components/ui/BaseButton.vue'
 import { getPlatformClass, getPlatformLabel, useAccountStore } from '@/stores/account'
@@ -14,9 +15,12 @@ const { accounts, loading, currentAccountId } = storeToRefs(accountStore)
 
 const showModal = ref(false)
 const showDeleteConfirm = ref(false)
+const showAvatarModal = ref(false)
 const deleteLoading = ref(false)
 const editingAccount = ref<any>(null)
 const accountToDelete = ref<any>(null)
+const editingAvatarAccount = ref<any>(null)
+const avatars = useStorage<Record<string, string>>('account_avatars', {})
 
 onMounted(() => {
   accountStore.fetchAccounts()
@@ -78,6 +82,23 @@ function selectAccount(account: any) {
     return
   accountStore.selectAccount(String(account.id))
 }
+
+function openAvatarModal(account: any, event: Event) {
+  event.stopPropagation()
+  editingAvatarAccount.value = account
+  showAvatarModal.value = true
+}
+
+function handleAvatarSaved(url: string) {
+  if (editingAvatarAccount.value) {
+    avatars.value[editingAvatarAccount.value.id] = url
+    showAvatarModal.value = false
+  }
+}
+
+function getAvatar(account: any) {
+  return avatars.value[account.id] || (account.uin ? `https://q1.qlogo.cn/g?b=qq&nk=${account.uin}&s=100` : '')
+}
 </script>
 
 <template>
@@ -125,8 +146,11 @@ function selectAccount(account: any) {
       >
         <div class="mb-4 flex items-start justify-between">
           <div class="flex items-center gap-3">
-            <div class="h-12 w-12 flex items-center justify-center overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700">
-              <img v-if="acc.uin" :src="`https://q1.qlogo.cn/g?b=qq&nk=${acc.uin}&s=100`" class="h-full w-full object-cover">
+            <div
+              class="h-12 w-12 flex items-center justify-center overflow-hidden rounded-full bg-gray-100 cursor-pointer hover:ring-2 hover:ring-blue-400 transition-all dark:bg-gray-700"
+              @click="openAvatarModal(acc, $event)"
+            >
+              <div v-if="getAvatar(acc)" v-html="`<img src='${getAvatar(acc)}' class='h-full w-full object-cover' />`" />
               <div v-else class="i-carbon-user text-2xl text-gray-400" />
             </div>
             <div>
@@ -204,6 +228,14 @@ function selectAccount(account: any) {
       :edit-data="editingAccount"
       @close="showModal = false"
       @saved="handleSaved"
+    />
+
+    <AvatarModal
+      :show="showAvatarModal"
+      :account-id="editingAvatarAccount?.id"
+      :current-avatar="editingAvatarAccount ? getAvatar(editingAvatarAccount) : ''"
+      @close="showAvatarModal = false"
+      @saved="handleAvatarSaved"
     />
 
     <ConfirmModal
