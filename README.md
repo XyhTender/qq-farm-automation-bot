@@ -4,9 +4,11 @@
 - 基于[Penty-d/qq-farm-bot-ui](https://github.com/Penty-d/qq-farm-bot-ui)项目二开
 - 参考[wjnnone/qq-farm-bot](https://github.com/wjnnone/qq-farm-bot)部分代码，感谢wjnnone！
 - 感谢[sulimu2/qq-farm-bot](https://github.com/sulimu2/qq-farm-bot)大佬提供的新版协议思路
+- 感谢[DeepFal/qq-farm-bot](https://github.com/DeepFal/qq-farm-bot-ui)大佬提供的背包物品种植和好友思路
 - 建议自己拉项目部署，没有测试过打包的Windows端和Mac端，docker后续整！
 - 更新优化日志详见update.log 感谢支持，喜欢的点一个start吧！
 - 默认账号密码都是admin，端口3007
+## 倒钩这辈子都发不了财！！！
 ## 技术栈
 
 **后端**

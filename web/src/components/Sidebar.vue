@@ -442,7 +442,11 @@ async function copyToken() {
         >
           <div class="flex items-center gap-3 overflow-hidden">
             <div class="h-8 w-8 flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-gray-200 ring-2 ring-white dark:bg-gray-600 dark:ring-gray-700">
-              <div class="i-carbon-user text-gray-400" />
+              <img
+                :src="userStore.avatar || 'https://free.picui.cn/free/2026/03/10/69affe5755149.jpg'"
+                class="h-full w-full object-cover"
+                @error="(e) => (e.target as HTMLImageElement).src = 'https://free.picui.cn/free/2026/03/10/69affe5755149.jpg'"
+              >
             </div>
             <div class="min-w-0 flex flex-col items-start">
               <span class="w-full truncate text-left text-sm font-medium">

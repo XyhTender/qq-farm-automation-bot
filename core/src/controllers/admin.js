@@ -2135,7 +2135,7 @@ function startAdminServer(dataProvider) {
         }
     };
 
-    const port = CONFIG.adminPort || 3000;
+    const port = CONFIG.adminPort || 3007;
     server = app.listen(port, '0.0.0.0', () => {
         adminLogger.info('admin panel started', { url: `http://localhost:${port}`, port });
     });

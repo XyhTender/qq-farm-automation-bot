@@ -16,6 +16,7 @@ export interface User {
   role: 'admin' | 'user'
   card: UserCard | null
   accountLimit: number
+  avatar?: string
 }
 
 export interface Card {
@@ -37,6 +38,7 @@ export const useUserStore = defineStore('user', () => {
   const username = computed(() => userInfo.value?.username || '')
   const userCard = computed(() => userInfo.value?.card)
   const accountLimit = computed(() => userInfo.value?.accountLimit ?? 2)
+  const avatar = computed(() => userInfo.value?.avatar || '')
 
   // 检查用户是否过期
   const isExpired = computed(() => {
@@ -179,6 +181,7 @@ export const useUserStore = defineStore('user', () => {
     username,
     userCard,
     accountLimit,
+    avatar,
     isExpired,
     expireTimeText,
     login,

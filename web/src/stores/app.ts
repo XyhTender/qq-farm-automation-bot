@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import api from '@/api'
 
 const THEME_KEY = 'ui_theme'
@@ -188,10 +188,8 @@ export const useAppStore = defineStore('app', () => {
     applyTheme(val)
   })
 
-  // Initialize theme on mount
-  onMounted(() => {
-    applyTheme(currentTheme.value)
-  })
+  // Initialize theme immediately (not in onMounted)
+  applyTheme(currentTheme.value)
 
   return {
     sidebarOpen,
