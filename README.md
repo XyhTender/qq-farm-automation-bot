@@ -3,7 +3,7 @@
 - 基于[Penty-d/qq-farm-bot-ui](https://github.com/Penty-d/qq-farm-bot-ui)项目二开
 - 更新优化日志详见update.log 感谢支持，喜欢的点一个star⭐吧！
 - 默认账号密码都是admin，端口3007，请部署登录后尽快修改密码！
-# 项目重构完毕，QQ1503938233，更新日志见Update.log
+# 项目重构完毕，QQ1503938233，老版本登陆问题解决了，这次只能在源码里面改版本号，后台改的没用，重构更新日志见Update.log
 
 ---
 
